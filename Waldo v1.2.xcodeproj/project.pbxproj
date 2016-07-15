@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		65ABD9891D2378AF00381343 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 65ABD9881D2378AF00381343 /* main.c */; };
+		65EB60AB1D3896D0001A4FB6 /* level1.c in Sources */ = {isa = PBXBuildFile; fileRef = 65EB60A91D3896D0001A4FB6 /* level1.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		65ABD9851D2378AF00381343 /* Waldo v1.2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Waldo v1.2"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65ABD9881D2378AF00381343 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		65EB60A91D3896D0001A4FB6 /* level1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = level1.c; sourceTree = "<group>"; };
+		65EB60AA1D3896D0001A4FB6 /* level1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = level1.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				65ABD9881D2378AF00381343 /* main.c */,
+				65EB60A91D3896D0001A4FB6 /* level1.c */,
+				65EB60AA1D3896D0001A4FB6 /* level1.h */,
 			);
 			path = "Waldo v1.2";
 			sourceTree = "<group>";
@@ -118,6 +123,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65EB60AB1D3896D0001A4FB6 /* level1.c in Sources */,
 				65ABD9891D2378AF00381343 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -235,6 +241,7 @@
 				65ABD98E1D2378AF00381343 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,11 +1,13 @@
 //
 //  main.c
-//  CreateFoldersAndFiles
+//  Where's Waldo?
 //
 //  Created by Thomas Hoinacki on 6/20/16.
 //  Copyright (c) 2016 Thomas Hoinacki. All rights reserved.
 //
 
+
+// C Library Headers
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -19,29 +21,48 @@
 #include <sys/syslimits.h>
 #include <fcntl.h>
 
+// Application Headers
+#include "level1.h"
+
+// Functions
 void create_rand3_file_num(char*, char*, char*, char* const);
 void log_waldo_sightings_dir(char*);
 void log_waldo_sightings_txtfile(char*, struct dirent*);
 
+// Global Variables
 char * sightingsLogPath;
 FILE * sightingsLogFile;
 int sightingsCount;
 
+
+
+// MAIN
 int main(int argc, const char * argv[]) {
     
-    char cwd[1024];
+    // Local Variables
+    char cwd[PATH_MAX];// cwd: current working directory
+    char * dirPathLvl1;
+    int pathLen;
+  
+   
     
-    // Get directory working directory path where this code is being executed from
+    /* Get directory working directory path where this code is being executed
+       from to act as starting point for creating directory tree */
     if (getcwd(cwd, sizeof(cwd)) != NULL)
     {
-        //Create top level Where's Waldo directory where code is run from
-        char* dirNameLvl1;
-        dirNameLvl1 = "/Where's Waldo Level 1";
-        int dirLvl1PathLen = 1 + strlen(cwd) + strlen(dirNameLvl1);
         
-        char * dirPathLvl1 = (char *) malloc(dirLvl1PathLen);
-        strcpy(dirPathLvl1, cwd);
-        strcat(dirPathLvl1, dirNameLvl1);
+        // Create Where's Waldo Level 1 top directory wherever code is run from on local machine
+        get_dir_lvl1_Path(cwd, &dirPathLvl1, &pathLen);
+        
+        
+        
+//        char* dirNameLvl1;
+//        dirNameLvl1 = "/Where's Waldo Level 1";
+//        int dirLvl1PathLen = 1 + strlen(cwd) + strlen(dirNameLvl1);
+//        
+//        char * dirPathLvl1 = (char *) malloc(dirLvl1PathLen);
+//        strcpy(dirPathLvl1, cwd);
+//        strcat(dirPathLvl1, dirNameLvl1);
         
         // Remove top level directory, files, children directories, and children files if exists so we can run this program repeatedly
         struct stat st = {0};
@@ -58,7 +79,7 @@ int main(int argc, const char * argv[]) {
         char* sightingsLogName;
         sightingsLogName = "/Waldo Sightings Log.txt";
         
-        sightingsLogPath = (char *) malloc(dirLvl1PathLen += strlen(sightingsLogName));
+        sightingsLogPath = (char *) malloc(1 + pathLen + strlen(sightingsLogName));
         strcpy(sightingsLogPath, dirPathLvl1);
         strcat(sightingsLogPath, sightingsLogName);
         
@@ -78,7 +99,7 @@ int main(int argc, const char * argv[]) {
         char* loremIpsumFileName;
         loremIpsumFileName = "/Waldo Lorem Ipsum Filler.txt";
         
-        char* loremIpsumFilePath = (char *) malloc(dirLvl1PathLen += strlen(loremIpsumFileName));
+        char* loremIpsumFilePath = (char *) malloc(1+ pathLen + strlen(loremIpsumFileName));
         strcpy(loremIpsumFilePath, dirPathLvl1);
         strcat(loremIpsumFilePath, loremIpsumFileName);
         
@@ -89,7 +110,7 @@ int main(int argc, const char * argv[]) {
         
         fprintf(fd2, loremIpsum);
         
-        if(fd2 != NULL)
+        if (fd2 != NULL)
         {
             fclose(fd2);
         }
