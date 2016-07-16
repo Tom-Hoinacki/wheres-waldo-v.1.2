@@ -40,8 +40,7 @@ void get_dir_lvl1_Path(char * cwd, char ** dirPathLvl1, int * pathLen)
     strcpy(*dirPathLvl1, cwd);
     strcat(*dirPathLvl1, dirNameLvl1);
     
-    // Free memory of pointers that will not be used again
-    free(cwd);
+    // Free memory pointer will not be used again
     free(dirNameLvl1);
 }
 

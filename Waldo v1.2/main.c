@@ -26,8 +26,8 @@
 
 // Functions
 void create_rand3_file_num(char*, char*, char*, char* const);
-void log_waldo_sightings_dir(char*);
-void log_waldo_sightings_txtfile(char*, struct dirent*);
+void log_waldo_sightings_dir(char * dirPath, FILE * sightingsLogFile);
+void log_waldo_sightings_txtfile(char * dirPath, struct dirent * in_Dir, FILE * sightingsLogFile);
 
 // Global Variables
 char * sightingsLogPath;
@@ -41,7 +41,7 @@ int main(int argc, const char * argv[])
 {
     
     // Local Variables
-    char * cwd = (char *)malloc(PATH_MAX);// cwd: current working directory
+    char cwd[1024];// cwd: current working directory
     char * dirPathLvl1;
     int pathLen;
     char *loremIpsumFilePath;
@@ -82,34 +82,52 @@ int main(int argc, const char * argv[])
          * RANDOM 1/100 CHANCE STRING "Waldo" IS INSERTED AFTER EACH WORD STREAMED AND PRINTED INTO EACH TEXT FILE
         /*********************************************************************************************************/
         
-        ///// Initialize children directory path variables
-        int const WALDO_DIR_NAME_LEN = 30;
-        char * const WALDO_DIR_NAME_FORMAT = "%s/Level %d-%d";
-        char * const WALDO_FILE_NAME_FORMAT = "%s/File %d.txt";
+        // Initialize children directory path variables
+        const int WALDO_DIR_NAME_LEN = 11;
+        
+        char * const WALDO_DIR_NAME_FORMAT = (char *)malloc(strlen(1 + "%s/Level %d-%d"));
+        strcpy(WALDO_DIR_NAME_FORMAT, "%s/Level %d-%d");
+                                                            
+        char * const WALDO_FILE_NAME_FORMAT = (char *)malloc(strlen(1 + "%s/File %d.txt"));
+        strcpy(WALDO_FILE_NAME_FORMAT, "%s/File %d.txt");
+        
         char * parentDirName = (char *) malloc(strlen(WALDO_DIR_NAME_FORMAT));
-        char * newDirPath = (char *) malloc (1000);
-        char * newFilePath = (char *) malloc(1000);
+        char * newDirPath = (char *) malloc (PATH_MAX);
+        char * newFilePath = (char *) malloc(PATH_MAX);
         char * dirPathLvl2 = (char *) malloc(1 + strlen(dirPathLvl1) + WALDO_DIR_NAME_LEN);
         
         
         // Initialize children directory level path identity numbers
         int lvlNum = 2;
         
+        // Initialize children directory level path identity numbers
         int dirNumLvl2 = 1;
         int dirNumLvl3 = 1;
         int dirNumLvl4 = 1;
         
+        // Seed random number generator
         srand(time(NULL));
+        
+        // Initialize children directory level counters for how many children directory left to create at that level (random 1-3)
         int mkDirLvl2 = rand() % 3 + 1;
         int mkDirLvl3;
         int mkDirLvl4;
+        
+        // Initialize number of files left to create in a child directory (random 1-3)
         int filesToCreate;
         int fileNum;
         
         // Initialize parent directory path
-        char * parentPath = (char *) malloc(1000);
+        char * parentPath = (char *) malloc(PATH_MAX);
         strcpy(parentPath, dirPathLvl1);
         
+                                                             
+                                                             
+                                                             
+        /* RECURSIVE DEPTH-FIRST ALGORITHM, FIRST CREATES AT LEAST ONE LEVEL 2 DIRECTORY, RANDOMIZES CREATION OF CHILD DIRECTORIES AND FILES */
+        /*************************************************************************************************************************************/
+                                                             
+                                                             
         // While there directories left to be made keep creating
         while (mkDirLvl2 > 0 || mkDirLvl3 > 0 || mkDirLvl4 > 0)
         {
@@ -229,7 +247,17 @@ int main(int argc, const char * argv[])
             }
         }
         
+        // Free memory of all pointers used for random asymmetrical directory tree creation
+        free(WALDO_DIR_NAME_FORMAT);
+        free(WALDO_FILE_NAME_FORMAT);
+        free(parentDirName);
+        free(newDirPath);
+        free(newFilePath);
+        free(dirPathLvl2);
+                                                             
         
+                                                             
+                                                             
         sightingsLogFile = fopen(sightingsLogPath, "w");
     
         DIR * d;
@@ -243,7 +271,7 @@ int main(int argc, const char * argv[])
         
         sightingsCount = 1;
         
-        log_waldo_sightings_dir(dirPathLvl1);
+        log_waldo_sightings_dir(dirPathLvl1, sightingsLogFile);
         
         fclose(sightingsLogFile);
     }
@@ -256,10 +284,10 @@ int main(int argc, const char * argv[])
 }
 
 
-void log_waldo_sightings_dir(char* dirPath)
+void log_waldo_sightings_dir(char * dirPath, FILE * sightingsLogFile)
 {
-    struct dirent* in_Dir;
-    DIR* d;
+    struct dirent * in_Dir;
+    DIR * d;
     struct stat st;
     char * childDirPath = malloc(PATH_MAX);
     strcpy(childDirPath, dirPath);
@@ -284,20 +312,20 @@ void log_waldo_sightings_dir(char* dirPath)
         
         if (S_ISREG(st.st_mode))
         {
-            log_waldo_sightings_txtfile(dirPath, in_Dir);
+            log_waldo_sightings_txtfile(dirPath, in_Dir, sightingsLogFile);
         }
         else if (S_ISDIR(st.st_mode))
         {
             strcat(childDirPath, "/");
             strcat(childDirPath, in_Dir->d_name);
-            log_waldo_sightings_dir(childDirPath);
+            log_waldo_sightings_dir(childDirPath, sightingsLogFile);
             strcpy(childDirPath, dirPath);
         }
     }
 }
 
 
-void log_waldo_sightings_txtfile(char* dirPath, struct dirent* in_File)
+void log_waldo_sightings_txtfile(char* dirPath, struct dirent* in_File, FILE * sightingsLogFile)
 {
     char* filePath = malloc(PATH_MAX);
     FILE* entry_File;
