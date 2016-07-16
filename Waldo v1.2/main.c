@@ -54,23 +54,8 @@ int main(int argc, const char * argv[]) {
         // Create Where's Waldo Level 1 top directory wherever code is run from on local machine
         get_dir_lvl1_Path(cwd, &dirPathLvl1, &pathLen);
         
-        
-        
-//        char* dirNameLvl1;
-//        dirNameLvl1 = "/Where's Waldo Level 1";
-//        int dirLvl1PathLen = 1 + strlen(cwd) + strlen(dirNameLvl1);
-//        
-//        char * dirPathLvl1 = (char *) malloc(dirLvl1PathLen);
-//        strcpy(dirPathLvl1, cwd);
-//        strcat(dirPathLvl1, dirNameLvl1);
-        
         // Remove top level directory, files, children directories, and children files if exists so we can run this program repeatedly
-        struct stat st = {0};
-
-        if (stat(dirPathLvl1, &st) != -1)
-        {
-            remove_directory(dirPathLvl1);
-        }
+        check_to_remove_existing_waldo_directory(dirPathLvl1);
         
         // Create top level directory
         mkdir(dirPathLvl1, 0700);
@@ -374,71 +359,6 @@ void log_waldo_sightings_txtfile(char* dirPath, struct dirent* in_File)
         }
     }
     fclose(entry_File);
-}
-
-
-
-//http://stackoverflow.com/questions/2256945/removing-a-non-empty-directory-programmatically-in-c-or-c
-int remove_directory(const char *path)
-{
-    DIR *d = opendir(path);
-    size_t path_len = strlen(path);
-    int r = -1;
-    
-    if (d)
-    {
-        struct dirent *p;
-        
-        r = 0;
-        
-        while (!r && (p=readdir(d)))
-        {
-            int r2 = -1;
-            char *buf;
-            size_t len;
-            
-            /* Skip the names "." and ".." as we don't want to recurse on them. */
-            if (!strcmp(p->d_name, ".") || !strcmp(p->d_name, ".."))
-            {
-                continue;
-            }
-            
-            len = path_len + strlen(p->d_name) + 2;
-            buf = malloc(len);
-            
-            if (buf)
-            {
-                struct stat statbuf;
-                
-                snprintf(buf, len, "%s/%s", path, p->d_name);
-                
-                if (!stat(buf, &statbuf))
-                {
-                    if (S_ISDIR(statbuf.st_mode))
-                    {
-                        r2 = remove_directory(buf);
-                    }
-                    else
-                    {
-                        r2 = unlink(buf);
-                    }
-                }
-                
-                free(buf);
-            }
-            
-            r = r2;
-        }
-        
-        closedir(d);
-    }
-    
-    if (!r)
-    {
-        r = rmdir(path);
-    }
-    
-    return r;
 }
 
 void create_rand3_file_num(char * newFilePath, char * newDirPath, char * loremPath, char * const format)

@@ -6,6 +6,7 @@
 //  Copyright (c) 2016 Thomas Hoinacki. All rights reserved.
 //
 
+// C Library Headers
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -19,7 +20,9 @@
 #include <sys/syslimits.h>
 #include <fcntl.h>
 
+// Application Header
 #include "level1.h"
+
 
 /* Creates Waldo Level 1 folder */
 void get_dir_lvl1_Path(char * cwd, char ** dirPathLvl1, int * pathLen)
@@ -36,4 +39,91 @@ void get_dir_lvl1_Path(char * cwd, char ** dirPathLvl1, int * pathLen)
     *dirPathLvl1 = (char *) malloc(*pathLen);
     strcpy(*dirPathLvl1, cwd);
     strcat(*dirPathLvl1, dirNameLvl1);
+}
+
+
+
+/* Checks if a Waldo directory tree already exists in same local drive location, if so remove existing directory tree */
+void check_to_remove_existing_waldo_directory(char * dirPathLvl1)
+{
+    struct stat st = {0};
+    
+    // Check if path exists already, if so remove
+    if (stat(dirPathLvl1, &st) != -1)
+    {
+        remove_directory(dirPathLvl1);
+    }
+}
+
+
+/* Recursively removes depth first a directory and all its child directories and files */
+//http://stackoverflow.com/questions/2256945/removing-a-non-empty-directory-programmatically-in-c-or-c
+int remove_directory(const char *path)
+{
+    DIR *d = opendir(path);
+    size_t path_len = strlen(path);
+    int r = -1;
+    
+    if (d)
+    {
+        struct dirent *p;
+        
+        r = 0;
+        
+        // While child directory exists keep looping and traversing depth-first across directory tree
+        while (!r && (p=readdir(d)))
+        {
+            int r2 = -1;
+            char *buf;
+            size_t len;
+            
+            /* Skip the names "." and ".." as we don't want to recurse on them. */
+            if (!strcmp(p->d_name, ".") || !strcmp(p->d_name, ".."))
+            {
+                continue;
+            }
+            
+            len = path_len + strlen(p->d_name) + 2;
+            buf = malloc(len);
+            
+            if (buf)
+            {
+                struct stat statbuf;
+                
+                snprintf(buf, len, "%s/%s", path, p->d_name);
+                
+                // Check if child path exists in file directory before taking action
+                if (!stat(buf, &statbuf))
+                {
+                    // if path is a child directory recursively call method to keep traversing down tree
+                    if (S_ISDIR(statbuf.st_mode))
+                    {
+                        r2 = remove_directory(buf);
+                    }
+                    // else it is a file and not a directory, remove the file
+                    else
+                    {
+                        r2 = unlink(buf);
+                    }
+                }
+                
+                // Free memory taken by directory/file path created to check for
+                free(buf);
+            }
+            
+            /* Assign before next iteration to check if there are any more children directories or files in current directory
+               will stay as -1 as when initialized at top of loop when there are no more files or directories to remove,
+               ending the loop */
+            r = r2;
+        }
+        
+        closedir(d);
+    }
+    
+    if (!r)
+    {
+        r = rmdir(path);
+    }
+    
+    return r;
 }
