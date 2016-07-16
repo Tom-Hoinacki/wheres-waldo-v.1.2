@@ -127,3 +127,57 @@ int remove_directory(const char *path)
     
     return r;
 }
+
+
+
+/* Create Waldo sightings log file */
+void create_sightings_log_file(char * dirPathLvl1, char ** sightingsLogPath, int pathLen)
+{
+    char * sightingsLogName;
+    sightingsLogName = "/Waldo Sightings Log.txt";
+    
+    // Allocate memory for sightings file path, build and assign file path
+    *sightingsLogPath = (char *) malloc(1 + pathLen + strlen(sightingsLogName));
+    strcpy(*sightingsLogPath, dirPathLvl1);
+    strcat(*sightingsLogPath, sightingsLogName);
+    
+    FILE* fd = fopen(*sightingsLogPath, "ab+");
+    
+    if(fd != NULL)
+    {
+        fclose(fd);
+    }
+    else
+    {
+        int error = strerror(errno);
+    }
+}
+
+
+/* Create text filler file that lives inside Waldo level and has string Waldo randomly inserted */
+void create_text_filler_file(char * dirPathLvl1, char ** loremIpsumFilePath, int pathLen)
+{
+    char * loremIpsumFileName;
+    loremIpsumFileName = "/Waldo Lorem Ipsum Filler.txt";
+    
+    *loremIpsumFilePath = (char *) malloc(1+ pathLen + strlen(loremIpsumFileName));
+    strcpy(*loremIpsumFilePath, dirPathLvl1);
+    strcat(*loremIpsumFilePath, loremIpsumFileName);
+    
+    char * loremIpsum= "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
+    
+    
+    FILE* fd2= fopen(*loremIpsumFilePath, "ab+");
+    
+    fprintf(fd2, loremIpsum);
+    
+    if (fd2 != NULL)
+    {
+        fclose(fd2);
+    }
+    else
+    {
+        int error = strerror(errno);
+    }
+}
+

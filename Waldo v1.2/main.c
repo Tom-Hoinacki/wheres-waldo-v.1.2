@@ -37,19 +37,26 @@ int sightingsCount;
 
 
 // MAIN
-int main(int argc, const char * argv[]) {
+int main(int argc, const char * argv[])
+{
     
     // Local Variables
     char cwd[PATH_MAX];// cwd: current working directory
     char * dirPathLvl1;
     int pathLen;
+    char *loremIpsumFilePath;
+    
+//    char * sightingsLogPath;
+//    FILE * sightingsLogFile;
+//    int sightingsCount;
   
-   
     
     /* Get directory working directory path where this code is being executed
        from to act as starting point for creating directory tree */
     if (getcwd(cwd, sizeof(cwd)) != NULL)
     {
+        /* CREATE LEVEL ONE DIRECTORY AND FILES */
+        /****************************************/
         
         // Create Where's Waldo Level 1 top directory wherever code is run from on local machine
         get_dir_lvl1_Path(cwd, &dirPathLvl1, &pathLen);
@@ -61,50 +68,19 @@ int main(int argc, const char * argv[]) {
         mkdir(dirPathLvl1, 0700);
         
         // Create log file of Waldo sightings in top level directory
-        char* sightingsLogName;
-        sightingsLogName = "/Waldo Sightings Log.txt";
-        
-        sightingsLogPath = (char *) malloc(1 + pathLen + strlen(sightingsLogName));
-        strcpy(sightingsLogPath, dirPathLvl1);
-        strcat(sightingsLogPath, sightingsLogName);
-        
-        FILE* fd = fopen(sightingsLogPath, "ab+");
-        
-        if(fd != NULL)
-        {
-            fclose(fd);
-        }
-        else
-        {
-            int error = strerror(errno);
-        }
-        
+        create_sightings_log_file(dirPathLvl1, &sightingsLogPath, pathLen);
         
         // Create Lorem Ispum file inside top directory to copy text from for creating other text files
-        char* loremIpsumFileName;
-        loremIpsumFileName = "/Waldo Lorem Ipsum Filler.txt";
-        
-        char* loremIpsumFilePath = (char *) malloc(1+ pathLen + strlen(loremIpsumFileName));
-        strcpy(loremIpsumFilePath, dirPathLvl1);
-        strcat(loremIpsumFilePath, loremIpsumFileName);
-        
-        char* loremIpsum= "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
+        create_text_filler_file(dirPathLvl1, &loremIpsumFilePath, pathLen);
+    
         
         
-        FILE* fd2= fopen(loremIpsumFilePath, "ab+");
-        
-        fprintf(fd2, loremIpsum);
-        
-        if (fd2 != NULL)
-        {
-            fclose(fd2);
-        }
-        else
-        {
-            int error = strerror(errno);
-        }
-
-        
+        /* CREATE RANDOM ASYMMETRICAL CHILD DIRECTORY TREE
+         * RANDOM BETWEEN 2-4 LEVELS OF CHILD DEPTH
+         * RANDOM BETWEEN 1-3 CHILD DIRECTORIES CREATED WITHIN EACH DIRECTORY
+         * RANDOM BETWEEN 1-3 TEXT FILES IN EACH DIRECTORY CREATED
+         * RANDOM 1/100 CHANCE STRING "Waldo" IS INSERTED AFTER EACH WORD STREAMED AND PRINTED INTO EACH TEXT FILE
+        /*********************************************************************************************************/
         
         // Initialize children directory path variables
         int const WALDO_DIR_NAME_LEN = 30;
