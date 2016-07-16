@@ -82,7 +82,7 @@ int main(int argc, const char * argv[])
          * RANDOM 1/100 CHANCE STRING "Waldo" IS INSERTED AFTER EACH WORD STREAMED AND PRINTED INTO EACH TEXT FILE
         /*********************************************************************************************************/
         
-        // Initialize children directory path variables
+        ///// Initialize children directory path variables
         int const WALDO_DIR_NAME_LEN = 30;
         char * const WALDO_DIR_NAME_FORMAT = "%s/Level %d-%d";
         char * const WALDO_FILE_NAME_FORMAT = "%s/File %d.txt";
