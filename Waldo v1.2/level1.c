@@ -27,9 +27,9 @@
 /* Creates Waldo Level 1 folder */
 void get_dir_lvl1_Path(char * cwd, char ** dirPathLvl1, int * pathLen)
 {
-    // Initialize and assign name
-    char * dirNameLvl1;
-    dirNameLvl1 = "/Where's Waldo Level 1";
+    // Initialize, allocate memory, assign name string
+    char * dirNameLvl1 = (char *)malloc(strlen(1 + "/Where's Waldo Level 1"));
+    strcpy(dirNameLvl1, "/Where's Waldo Level 1");
     
     // Assign pathLen pointer for reuse in main to point to len's address
     int len = 1 + strlen(cwd) + strlen(dirNameLvl1);
@@ -39,6 +39,10 @@ void get_dir_lvl1_Path(char * cwd, char ** dirPathLvl1, int * pathLen)
     *dirPathLvl1 = (char *) malloc(*pathLen);
     strcpy(*dirPathLvl1, cwd);
     strcat(*dirPathLvl1, dirNameLvl1);
+    
+    // Free memory of pointers that will not be used again
+    free(cwd);
+    free(dirNameLvl1);
 }
 
 
@@ -133,16 +137,22 @@ int remove_directory(const char *path)
 /* Create Waldo sightings log file */
 void create_sightings_log_file(char * dirPathLvl1, char ** sightingsLogPath, int pathLen)
 {
-    char * sightingsLogName;
-    sightingsLogName = "/Waldo Sightings Log.txt";
+    // Initialize, allocate memory, assign name string
+    char * sightingsLogName = (char *)malloc(strlen(1 + "/Waldo Sightings Log.txt"));
+    strcpy(sightingsLogName, "/Waldo Sightings Log.txt");
     
     // Allocate memory for sightings file path, build and assign file path
     *sightingsLogPath = (char *) malloc(1 + pathLen + strlen(sightingsLogName));
     strcpy(*sightingsLogPath, dirPathLvl1);
     strcat(*sightingsLogPath, sightingsLogName);
     
+    // Free memory
+    free(sightingsLogName);
+    
+    // Create log file with path, close after creation
     FILE* fd = fopen(*sightingsLogPath, "ab+");
     
+    // Close file
     if(fd != NULL)
     {
         fclose(fd);
@@ -157,20 +167,34 @@ void create_sightings_log_file(char * dirPathLvl1, char ** sightingsLogPath, int
 /* Create text filler file that lives inside Waldo level and has string Waldo randomly inserted */
 void create_text_filler_file(char * dirPathLvl1, char ** loremIpsumFilePath, int pathLen)
 {
-    char * loremIpsumFileName;
-    loremIpsumFileName = "/Waldo Lorem Ipsum Filler.txt";
+    // Initialize, allocate memory, assign name string
+    char * loremIpsumFileName = (char *)malloc(strlen(1 + "/Waldo Lorem Ipsum Filler.txt"));
+    strcpy(loremIpsumFileName, "/Waldo Lorem Ipsum Filler.txt");
     
+    // Allocate memory for text filler file path, build and assign file path
     *loremIpsumFilePath = (char *) malloc(1+ pathLen + strlen(loremIpsumFileName));
     strcpy(*loremIpsumFilePath, dirPathLvl1);
     strcat(*loremIpsumFilePath, loremIpsumFileName);
     
-    char * loremIpsum= "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
+    // Free memory
+    free(loremIpsumFileName);
+    
+    // Initialize, allocate memory, assign filler text string
+    char * loremIpsum= (char *)malloc(strlen(1 + "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum")) ;
+                                      
+    strcpy(loremIpsum, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum");
     
     
+    // Create read/write file for text filler file
     FILE* fd2= fopen(*loremIpsumFilePath, "ab+");
     
+    // Write filler text to file
     fprintf(fd2, loremIpsum);
+      
+    // Free text filler string pointer
+    free(loremIpsum);
     
+    // Close file
     if (fd2 != NULL)
     {
         fclose(fd2);

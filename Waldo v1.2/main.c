@@ -41,7 +41,7 @@ int main(int argc, const char * argv[])
 {
     
     // Local Variables
-    char cwd[PATH_MAX];// cwd: current working directory
+    char * cwd = (char *)malloc(PATH_MAX);// cwd: current working directory
     char * dirPathLvl1;
     int pathLen;
     char *loremIpsumFilePath;
