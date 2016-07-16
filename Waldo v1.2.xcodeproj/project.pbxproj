@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		65ABD9891D2378AF00381343 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 65ABD9881D2378AF00381343 /* main.c */; };
 		65EB60AB1D3896D0001A4FB6 /* level1.c in Sources */ = {isa = PBXBuildFile; fileRef = 65EB60A91D3896D0001A4FB6 /* level1.c */; };
+		65EB60B11D3A1E6A001A4FB6 /* tree_creator.c in Sources */ = {isa = PBXBuildFile; fileRef = 65EB60AF1D3A1E6A001A4FB6 /* tree_creator.c */; };
+		65EB60B41D3A2A50001A4FB6 /* sightings_log.c in Sources */ = {isa = PBXBuildFile; fileRef = 65EB60B21D3A2A50001A4FB6 /* sightings_log.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +30,10 @@
 		65ABD9881D2378AF00381343 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		65EB60A91D3896D0001A4FB6 /* level1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = level1.c; sourceTree = "<group>"; };
 		65EB60AA1D3896D0001A4FB6 /* level1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = level1.h; sourceTree = "<group>"; };
+		65EB60AF1D3A1E6A001A4FB6 /* tree_creator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tree_creator.c; path = ../tree_creator.c; sourceTree = "<group>"; };
+		65EB60B01D3A1E6A001A4FB6 /* tree_creator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tree_creator.h; path = ../tree_creator.h; sourceTree = "<group>"; };
+		65EB60B21D3A2A50001A4FB6 /* sightings_log.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sightings_log.c; sourceTree = "<group>"; };
+		65EB60B31D3A2A50001A4FB6 /* sightings_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sightings_log.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +67,10 @@
 			isa = PBXGroup;
 			children = (
 				65ABD9881D2378AF00381343 /* main.c */,
+				65EB60AF1D3A1E6A001A4FB6 /* tree_creator.c */,
+				65EB60B01D3A1E6A001A4FB6 /* tree_creator.h */,
+				65EB60B21D3A2A50001A4FB6 /* sightings_log.c */,
+				65EB60B31D3A2A50001A4FB6 /* sightings_log.h */,
 				65EB60A91D3896D0001A4FB6 /* level1.c */,
 				65EB60AA1D3896D0001A4FB6 /* level1.h */,
 			);
@@ -123,6 +133,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65EB60B11D3A1E6A001A4FB6 /* tree_creator.c in Sources */,
+				65EB60B41D3A2A50001A4FB6 /* sightings_log.c in Sources */,
 				65EB60AB1D3896D0001A4FB6 /* level1.c in Sources */,
 				65ABD9891D2378AF00381343 /* main.c in Sources */,
 			);
